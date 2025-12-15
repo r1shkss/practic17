@@ -1,0 +1,75 @@
+using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace priorochka
+{
+    public enum EmploymentStatus
+    {
+        Active,
+        OnLeave,
+        Terminated
+    }
+
+    public class Employee
+    {
+        public string Name;
+        public DateTime? HireDate;
+        public EmploymentStatus Status;
+
+        public int GetYearsWorked()
+        {
+            if (!HireDate.HasValue)
+            {
+                return -1;
+            }
+
+            DateTime now = DateTime.Now;
+            int years = now.Year - HireDate.Value.Year;
+
+            if (now.Month < HireDate.Value.Month ||
+                (now.Month == HireDate.Value.Month && now.Day < HireDate.Value.Day))
+            {
+                years--;
+            }
+
+            return years;
+        }
+
+        public override string ToString()
+        {
+            string hireDateStr = HireDate.HasValue ? HireDate.Value.ToString("yyyy-MM-dd") : "Не нанят";
+            return $"Сотрудник: {Name}, Дата найма: {hireDateStr}, Статус: {Status}";
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var emp1 = new Employee
+            {
+                Name = "Иванов Иван",
+                HireDate = new DateTime(2020, 1, 15),
+                Status = EmploymentStatus.Active
+            };
+
+            var emp2 = new Employee
+            {
+                Name = "Петров Петр",
+                HireDate = null,
+                Status = EmploymentStatus.Terminated
+            };
+
+            Console.WriteLine(emp1);
+            Console.WriteLine($"Лет работы: {emp1.GetYearsWorked()}");
+
+            Console.WriteLine();
+            Console.WriteLine(emp2);
+            Console.WriteLine($"Лет работы: {emp2.GetYearsWorked()}");
+        }
+    }
+}
