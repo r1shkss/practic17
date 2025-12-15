@@ -1,0 +1,38 @@
+using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace priorochka
+{
+
+    public struct Weather
+    {
+        public string City;
+        public double? Temperature;
+
+        public override string ToString()
+        {
+            if (Temperature == null)
+            {
+                return $"{City}: Нет данных";
+            }
+            return $"{City}: {Temperature}°C";
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var w1 = new Weather { City = "Москва", Temperature = 22.5 };
+            var w2 = new Weather { City = "Сочи", Temperature = null };
+
+            Console.WriteLine(w1);
+            Console.WriteLine(w2);
+            Console.WriteLine(w2.Temperature ?? -999);
+        }
+    }
+}
